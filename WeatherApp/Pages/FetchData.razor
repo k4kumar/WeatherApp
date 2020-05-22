@@ -1,11 +1,22 @@
 ﻿@page "/fetchdata"
 
 @using WeatherApp.Data
+@using Models
 @inject WeatherForecastService ForecastService
+
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>Enter a city name to get weather details</p>
+
+<EditForm Model="@newCity" OnValidSubmit="@CheckWeather">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText id="cityName" @bind-Value="@newCity.CityName" placeholder="City name"></InputText>
+    <button class="btn btn-primary" type="submit">Check</button>
+</EditForm>
+<br />
 
 @if (forecasts == null)
 {
@@ -16,21 +27,35 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>City</th>
                 <th>Date</th>
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Feels Like</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var forecast in forecasts)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+                if (forecast.City == "City not found")
+                {
+                    <tr>
+                        <td colspan="6">@forecast.City</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>@forecast.City</td>
+                        <td>@forecast.Date.ToShortDateString()</td>
+                        <td>@forecast.TemperatureC</td>
+                        <td>@forecast.TemperatureF</td>
+                        <td>@forecast.FeelsLike</td>
+                        <td>@forecast.Description</td>
+                    </tr>
+                }
+
             }
         </tbody>
     </table>
@@ -38,9 +63,16 @@ else
 
 @code {
     private WeatherForecast[] forecasts;
+    private CityViewModel newCity = new CityViewModel();
+
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        forecasts = await ForecastService.GetForecastAsync();
+    }
+
+    protected async Task CheckWeather()
+    {
+        forecasts = await ForecastService.GetForecastAsync(newCity.CityName);
     }
 }

@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FreeGeoIPCore" Version="1.0.3" />
+    <PackageReference Include="MetOfficeDataPoint" Version="2.1.0" />
+  </ItemGroup>
+
 </Project>
