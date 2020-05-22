@@ -18,7 +18,7 @@ namespace WeatherApp.Data
 
         private static readonly string[] Cities = new[]
         {
-            "Dhaka", "Chittagong", "Feni", "Rajshahi", "Jessore", "Sylhet", "Rangpur", "Barishal", "Khulna", "Cox's Bazar"
+            "Dhaka", "Chittagong", "London", "Delhi", "Sydney", "New York", "Dubai", "Sharjah", "Kathmandu", "Montreal"
         };
 
 
